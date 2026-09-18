@@ -1,0 +1,16 @@
+const fs = require('node:fs');
+const path = require('node:path');
+const root = path.resolve('mobile');
+const staging = path.resolve('work/maeumsai-mobile-v0.2');
+fs.mkdirSync(staging,{recursive:true});
+for(const name of ['App.tsx','index.ts','app.json','package.json','package-lock.json','tsconfig.json','README.md','TESTING.md','ROADMAP.md','ASSETS.md','LICENSE','.env.example','.gitignore']) fs.copyFileSync(path.join(root,name),path.join(staging,name));
+for(const name of ['src','assets','tests','scripts']) fs.cpSync(path.join(root,name),path.join(staging,name),{recursive:true});
+fs.mkdirSync(path.join(staging,'server'),{recursive:true});
+fs.copyFileSync(path.join(root,'server/server.mjs'),path.join(staging,'server/server.mjs'));
+const { toQR } = require(path.join(root,'node_modules/toqr'));
+const sharp = require('C:/Users/piman/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/sharp');
+const matrix = toQR('exp://192.168.35.61:8081');
+const size = Math.sqrt(matrix.length), border = 4, width = size + border * 2;
+const raw = Buffer.alloc(width*width,255);
+for(let y=0;y<size;y++)for(let x=0;x<size;x++)raw[(y+border)*width+x+border]=matrix[y*size+x]?0:255;
+sharp(raw,{raw:{width,height:width,channels:1}}).resize(width*12,width*12,{kernel:'nearest'}).png().toFile('outputs/maeumsai-expo-qr.png').then(()=>console.log('Source package staged; local Expo QR generated.'));
