@@ -2,7 +2,7 @@
   "expo": {
     "name": "마음사이",
     "slug": "maeumsai",
-    "version": "0.4.0",
+    "version": "0.5.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -20,7 +20,17 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-secure-store"
+      "expo-secure-store",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "캘린더에 붙일 사진을 선택합니다.",
+          "cameraPermission": "캘린더에 붙일 일상의 사진을 촬영합니다.",
+          "microphonePermission": false
+        }
+      ],
+      "expo-video",
+      "expo-image"
     ]
   }
 }
