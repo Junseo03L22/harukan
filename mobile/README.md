@@ -1,3 +1,7 @@
+# 하루칸 · 0.6.0
+
+현재 목표: Android APK 설치 테스트. eas.json의 preview 프로필을 사용합니다.
+
 # 현재 버전: 0.5 · 사진 다이어리 캘린더
 
 현재 실행 앱은 App.tsx → src/calendar/CalendarApp.tsx입니다. 오늘 사진·스티커와 일정, 월간 달력, 사진 편집, 4컷, 짧은 영상, 종이 배경을 제공합니다.

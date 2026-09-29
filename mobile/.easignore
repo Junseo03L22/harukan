@@ -1,0 +1,17 @@
+node_modules/
+.expo/
+dist/
+.env
+.env.*
+!.env.example
+server/
+tests/
+scripts/
+credentials.json
+*.keystore
+*.jks
+*.p12
+*.p8
+*.apk
+*.aab
+*.log

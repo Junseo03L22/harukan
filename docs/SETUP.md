@@ -1,3 +1,11 @@
+# 하루칸 새 PC 설정
+
+Node.js 24를 준비하고 mobile에서 npm ci 후 npm start를 실행합니다. 현재 사진 캘린더는 별도 연결 서버가 필요하지 않습니다.
+
+Android 설치용 빌드는 [ANDROID-TESTING.md](ANDROID-TESTING.md)를 참고하세요. 아래 내용은 예전 관계·아바타 앱의 서버 테스트 기록입니다.
+
+---
+
 # 맥북 / 다른 Windows PC에서 실행
 
 1. GitHub 저장소를 clone하고 저장소 루트를 Codex 프로젝트로 엽니다.

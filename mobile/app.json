@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "마음사이",
-    "slug": "maeumsai",
-    "version": "0.5.0",
+    "name": "하루칸",
+    "slug": "harukan",
+    "version": "0.6.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -14,7 +14,9 @@
         "backgroundColor": "#EAE7FC",
         "foregroundImage": "./assets/avatars/salgu-normal.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.junseo03l22.harukan",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"

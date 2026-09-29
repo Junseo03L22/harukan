@@ -53,3 +53,5 @@ tests/: 저장소 및 실제 HTTP 통합 테스트. 현재 15개.
 다이어리 확장 완료: DiaryEditor/DiaryArt/Canvas 신규 모듈, paper/months/장식 Piece와 일정 style/done. 상세 CALENDAR-0.5.md 최신 항목 참조. 테스트 24개.
 
 2026-09-29: 현재 제품은 사진 다이어리 캘린더 0.5. 오늘 사진 → 일정 순 홈 화면, 달력 모달, 배경 색상과 패턴, 실제 찢어진 종이 외곽 추가. 테스트 24개·타입 검사 및 3플랫폼 Expo export 통과. export는 설치용 바이너리가 아니며, TestFlight/App Store 서명 빌드는 아직 생성하지 않음. 위의 0.4 우선순위는 과거 기록으로 취급.
+
+2026-09-29: 브랜드 하루칸(Harukan)으로 변경, 버전 0.6.0. Android preview APK / production AAB 프로필 준비. 이번 목표는 Android 설치 테스트이며 iOS 배포는 후순위. APK 빌드 완료를 아직 주장하지 말 것.

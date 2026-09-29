@@ -4,3 +4,5 @@ Preserve Korean product copy. Current direction is photo calendar decoration wit
 Never commit .env secrets, Expo authentication, server/data, node_modules, or device credentials. Do not assume the previous developer machine IP or authentication exists. Read docs/SETUP.md for fresh-machine setup.
 Run npm test and npm run typecheck from mobile for meaningful code changes. Exporting bundles is not an App Store binary build. Update docs/HANDOFF.md with material changes and verified limitations.
 
+
+Current brand: 하루칸 (Harukan), version 0.6.0. Priority: standalone Android APK testing using the preview profile in mobile/eas.json. Preserve old AsyncStorage/IndexedDB keys to retain user data. Archive names are historical.

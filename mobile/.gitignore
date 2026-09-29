@@ -41,3 +41,9 @@ server/data/
 # generated native folders
 /ios
 /android
+
+# Build credentials and artifacts
+credentials.json
+*.keystore
+*.apk
+*.aab
