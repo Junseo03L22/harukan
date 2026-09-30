@@ -35,3 +35,26 @@ Expo 계정에 프로젝트를 연결하면 app.json에 owner와 extra.eas.proje
 
 ## 현재 검증 범위
 타입 검사·단위/통합 테스트·Expo 번들 export와 실제 APK 빌드/기기 테스트는 서로 다릅니다. APK 생성과 실기기 검증 결과는 수행 후 별도로 기록합니다.
+
+## PC 에뮬레이터 준비 (2026-09-30)
+- EAS 프로젝트: https://expo.dev/accounts/arthas_js/projects/harukan
+- 첫 APK 빌드: https://expo.dev/accounts/arthas_js/projects/harukan/builds/b396b871-3d29-4b38-bb9d-45dc1de9ac53
+- Android 16 / API 36 x86_64 에뮬레이터 설치를 완료했습니다.
+- 이 PC의 도구/가상 기기는 Git 저장소 밖 work/android에만 둡니다.
+- 사용자가 Android SDK 약관에 동의했습니다. 다른 PC에서는 해당 사용자가 약관을 확인하세요.
+- Windows WHPX 가속 사용 가능 확인. 아래 완료 기록을 참고하세요.
+
+## APK 설치 및 기본 동작 검증 완료 (2026-09-30)
+- 위 EAS preview 빌드가 FINISHED 상태로 완료되었습니다. APK 크기: 85,997,776바이트.
+- Android 16 / API 36 x86_64, WHPX 에뮬레이터에 APK 직접 설치 성공.
+- Expo Go나 Metro 연결 없이 독립 실행 확인.
+- 오늘 홈 표시, 월간 달력 열기, 9월 29일 선택 확인.
+- 9월 29일에 종일 일정 H 추가 및 저장 확인.
+- Android 사진 선택기로 프로젝트 테스트 이미지 가져오기, 꾸미기 완료 확인.
+- 앱 force-stop 후 다시 실행: 오늘 홈으로 진입, 월간 달력에서 테스트 사진/일정 표시, 9월 29일 상세에서 사진과 일정 유지 확인.
+- 테스트 후 Android crash 로그 버퍼에 기록 없음.
+
+이는 기본 설치·저장 흐름 테스트 완료이며 전체 기능 QA 완료는 아닙니다. 테두리 드래그는 에뮬레이터에서 스크롤로 처리되어 크기 변경 성공을 확인하지 못했습니다. 사진 이동/핀치, 카메라, GIF/영상, 배경 편집, 누끼/4컷, 권한 거절 및 실기기 성능은 별도 검증이 필요합니다.
+
+이 PC의 재실행 도우미는 저장소 밖 work/android/start-harukan.ps1입니다. Android 도구는 사용자 홈의 harukan-android-tools ASCII junction을 사용하며 AVD 경로는 user/avd입니다. 다른 PC에 이 경로를 그대로 적용하지 마세요.
+

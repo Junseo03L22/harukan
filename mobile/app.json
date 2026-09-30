@@ -33,6 +33,12 @@
       ],
       "expo-video",
       "expo-image"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "bc208971-3e12-44b1-97c9-d681d02e754e"
+      }
+    },
+    "owner": "arthas_js"
   }
 }
