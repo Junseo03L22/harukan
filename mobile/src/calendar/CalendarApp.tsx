@@ -17,11 +17,15 @@ import {Art,Layer,DayPreview} from './Canvas';
 import {DiaryEditor} from './DiaryEditor';
 import {Paper} from './DiaryArt';
 import {BackgroundEditor} from './BackgroundEditor';
+import {MonthExport} from './MonthExport';
+import {BackupPanel} from './BackupPanel';
 const themes={paper:{paper:'#FFFDF8',accent:'#876675',back:'#F7F3ED'},pink:{paper:'#FFF4F4',accent:'#A76D7E',back:'#F9EDED'},sage:{paper:'#F4F7EE',accent:'#668775',back:'#EDF2E9'}};
 function CalendarApp() {
   const today=dateKey(new Date());
   const [interacting,setInteracting]=useState(false);
   const [calendarOpen,setCalendarOpen]=useState(false);
+  const [exportOpen,setExportOpen]=useState(false);
+  const [backupOpen,setBackupOpen]=useState(false);
   const [isEditing,setIsEditing]=useState(false);
   const scroll=useRef<ScrollView>(null);const [finishing,setFinishing]=useState(false);
   const [month,setMonth]=useState(()=>new Date(new Date().getFullYear(),new Date().getMonth(),1));
@@ -88,6 +92,7 @@ function CalendarApp() {
       {!!error&&<Text accessibilityRole="alert" style={s.error}>{error}</Text>}
       {saveState.startsWith('저장 실패')&&<Pressable accessibilityRole="button" onPress={()=>void commit(current.current).then(()=>setError('')).catch(()=>setError('저장 공간을 확인해 줘.'))} style={{padding:13}}><Text style={s.hint}>다시 저장</Text></Pressable>}
       {isEditing&&<View style={s.bottom}>{button('내 스티커 보관함',()=>setPanel('shelf'))}{button('앱 색상',()=>setPanel('theme'))}</View>}
+      {!isEditing&&<View style={{marginTop:28,alignItems:'flex-start'}}>{button('기록 백업 · 복원',()=>setBackupOpen(true),false,busy||finishing)}</View>}
     </ScrollView>
     <Modal visible={calendarOpen} animationType="slide" presentationStyle="pageSheet" onRequestClose={()=>setCalendarOpen(false)}><SafeAreaView style={[s.safe,{backgroundColor:theme.back}]}><ScrollView contentContainerStyle={s.content}><View style={s.top}><Text style={s.title}>나의 달력</Text>{button('닫기',()=>setCalendarOpen(false))}</View>
       <View style={s.monthTop}>{button('‹',()=>{setMonth(new Date(month.getFullYear(),month.getMonth()-1,1));setActive(null);})}<Pressable accessibilityRole="button" accessibilityLabel="연도 월 날짜 선택" onPress={()=>setChoosingDate(true)}><Text style={s.month}>{month.getFullYear()}년 {month.getMonth()+1}월 ▾</Text></Pressable>{button('›',()=>{setMonth(new Date(month.getFullYear(),month.getMonth()+1,1));setActive(null);})}</View>
@@ -99,7 +104,11 @@ function CalendarApp() {
           {key&&(album.days[key]??[]).some(p=>p.kind==='video')&&<Text style={{position:'absolute',right:3,top:3,fontSize:10,color:theme.accent}}>▶</Text>}
         </Pressable>)}</View>
       </View>
-    </ScrollView>    {choosingDate&&<DatePicker date={`${month.getFullYear()}-${String(month.getMonth()+1).padStart(2,'0')}-${date.slice(8)}`} onClose={()=>setChoosingDate(false)} onSelect={key=>{setDate(key);setMonth(new Date(Number(key.slice(0,4)),Number(key.slice(5,7))-1,1));setActive(null);setChoosingDate(false);setCalendarOpen(false);setIsEditing(false);scroll.current?.scrollTo({y:0,animated:false});}}/>}</SafeAreaView></Modal>
+      <View style={{marginTop:18}}>{button('이 달 이미지 저장 · 공유',()=>setExportOpen(true),true)}</View>
+    </ScrollView>
+    {exportOpen&&<MonthExport album={album} month={month} paper={theme.paper} onClose={()=>setExportOpen(false)}/>}
+    {choosingDate&&<DatePicker date={`${month.getFullYear()}-${String(month.getMonth()+1).padStart(2,'0')}-${date.slice(8)}`} onClose={()=>setChoosingDate(false)} onSelect={key=>{setDate(key);setMonth(new Date(Number(key.slice(0,4)),Number(key.slice(5,7))-1,1));setActive(null);setChoosingDate(false);setCalendarOpen(false);setIsEditing(false);scroll.current?.scrollTo({y:0,animated:false});}}/>}</SafeAreaView></Modal>
+    {backupOpen&&<BackupPanel album={album} onClose={()=>setBackupOpen(false)} onRestored={restored=>{++revision.current;current.current=restored;setAlbum(restored);setActive(null);setIsEditing(false);setError('');setSaveState('기기에 저장했어');}}/>}
     {background&&<BackgroundEditor date={background} paper={theme.paper} initial={{pieces:album.days[background]??[],paper:album.papers?.[background]??'plain',color:album.paperColors?.[background]}} onClose={()=>setBackground(null)} onSave={async page=>{const a=current.current;const paperColors={...a.paperColors};if(page.color)paperColors[background]=page.color;else delete paperColors[background];await commit({...a,papers:{...a.papers,[background]:page.paper},paperColors});}}/>}
     {diary&&<DiaryEditor title="하루 꾸미기" date={diary.key} initial={{pieces:album.days[diary.key]??[],paper:album.papers?.[diary.key]??'plain',color:album.paperColors?.[diary.key]}} onClose={()=>setDiary(null)} onSave={async page=>{const a=current.current;await commit({...a,days:{...a.days,[diary.key]:page.pieces},papers:{...a.papers,[diary.key]:page.paper}});setActive(null);}}/>}
     {schedule&&<ScheduleEditor date={schedule.date} event={schedule.event} onClose={()=>setSchedule(null)} onSave={async event=>{const a=current.current;const items=a.events?.[schedule.date]??[];await commit({...a,events:{...a.events,[schedule.date]:items.some(e=>e.id===event.id)?items.map(e=>e.id===event.id?event:e):[...items,event]}});}} onDelete={async()=>{const a=current.current;await commit({...a,events:{...a.events,[schedule.date]:(a.events?.[schedule.date]??[]).filter(e=>e.id!==schedule.event?.id)}});}}/>}

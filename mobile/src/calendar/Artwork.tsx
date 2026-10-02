@@ -4,6 +4,7 @@ import { toneMatrix } from './tones';
 import Svg, { Filter, FeColorMatrix, Circle, Defs, G, Image as SvgImage, Mask, Path, Rect } from 'react-native-svg';
 import { Cutout, pathOf, Piece, StickerId, stickers } from './model';
 import { photoUri } from './storage';
+import { useCaptureImage } from './CaptureContext';
 export function Sticker({ id, size }: {id:StickerId;size:number}) {
   const color = stickers.find(s=>s.id===id)?.color ?? '#B39BC8';
   return <Svg width={size} height={size} viewBox="0 0 100 100"><G stroke="#FFFDF8" strokeWidth={4} strokeLinejoin="round" fill={color}>
@@ -16,6 +17,7 @@ export function Sticker({ id, size }: {id:StickerId;size:number}) {
   </G></Svg>;
 }
 export function Photo({ piece, width, height, cutout = piece.cutout }: {piece:Piece;width:number;height:number;cutout?:Cutout}) {
+  const capture = useCaptureImage(`${piece.source}:${piece.tone}:${piece.intensity}`);
   const id = `mask${useId().replace(/[^a-zA-Z0-9]/g,'')}`;
   return <Svg width={width} height={height} viewBox="0 0 1000 1000" preserveAspectRatio="none">
     <Defs><Filter id={`${id}tone`}><FeColorMatrix type="matrix" values={toneMatrix(piece.tone,piece.intensity??1)}/></Filter><Mask id={id} x={0} y={0} width={1000} height={1000} maskUnits="userSpaceOnUse" maskType="luminance">
@@ -23,7 +25,7 @@ export function Photo({ piece, width, height, cutout = piece.cutout }: {piece:Pi
       {!!cutout?.outline.length && <Path d={pathOf(cutout.outline,true)} fill="white"/>}
       {cutout?.strokes.map((s,i)=><G key={i} fill={s.restore?'white':'black'} stroke={s.restore?'white':'black'} strokeWidth={s.width} strokeLinecap="round" strokeLinejoin="round"><Path d={pathOf(s.points)} fill="none"/>{s.points.length===1 && <Circle cx={s.points[0].x} cy={s.points[0].y} r={s.width/2} strokeWidth={0}/>}</G>)}
     </Mask></Defs>
-    <G mask={`url(#${id})`}><SvgImage filter={piece.tone&&piece.tone!=='original'?`url(#${id}tone)`:undefined} href={{uri:photoUri(piece.source)}} width={1000} height={1000} preserveAspectRatio="none"/></G>
+    <G mask={`url(#${id})`}><SvgImage onLoad={capture.onLoad} filter={piece.tone&&piece.tone!=='original'?`url(#${id}tone)`:undefined} href={{uri:photoUri(piece.source)}} width={1000} height={1000} preserveAspectRatio="none"/></G>
   </Svg>;
 }
 

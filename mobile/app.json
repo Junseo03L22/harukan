@@ -2,7 +2,7 @@
   "expo": {
     "name": "하루칸",
     "slug": "harukan",
-    "version": "0.6.0",
+    "version": "0.7.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -16,7 +16,7 @@
       },
       "predictiveBackGestureEnabled": false,
       "package": "com.junseo03l22.harukan",
-      "versionCode": 1
+      "versionCode": 2
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -32,7 +32,16 @@
         }
       ],
       "expo-video",
-      "expo-image"
+      "expo-image",
+      [
+        "expo-media-library",
+        {
+          "granularPermissions": [],
+          "savePhotosPermission": "하루칸에서 꾸민 달력을 사진 앨범에 저장합니다.",
+          "photosPermission": "하루칸에서 저장한 달력을 확인합니다.",
+          "isAccessMediaLocationEnabled": false
+        }
+      ]
     ],
     "extra": {
       "eas": {

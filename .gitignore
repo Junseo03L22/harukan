@@ -12,6 +12,8 @@ web-build/
 **/server/data/
 expo-local-state/
 npm-cache/
+.npm-cache/
+.qa/
 *.log
 *.tsbuildinfo
 .DS_Store

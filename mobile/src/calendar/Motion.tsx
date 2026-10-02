@@ -6,6 +6,8 @@ import { useVideoPlayer, VideoView } from 'expo-video';
 import { useEvent } from 'expo';
 import { Piece } from './model';
 import { resolveMedia } from './mediaFiles';
+import { photoUri } from './storage';
+import { useCaptureImage } from './CaptureContext';
 
 function useMedia(source:string) {
   const [result,setResult]=useState({uri:'',error:''});
@@ -13,9 +15,10 @@ function useMedia(source:string) {
   return result;
 }
 export function MotionArt({piece,width,height}:{piece:Piece;width:number;height:number}) {
+  const capture=useCaptureImage(piece.kind==='video'?piece.poster??'':piece.source);
   const {uri,error}=useMedia(piece.kind==='gif'?piece.source:'');
   return <View style={{width,height,backgroundColor:piece.kind==='video'?'#E5DEE3':'transparent'}}>
-    {(piece.kind==='video'?piece.poster:uri)?<Image source={piece.kind==='video'?piece.poster:uri} style={{width,height}} contentFit="contain" autoplay/>:null}
+    {(piece.kind==='video'?piece.poster:uri)?<Image source={piece.kind==='video'?photoUri(piece.poster!):uri} style={{width,height}} contentFit="contain" autoplay={!capture.capturing} onLoad={capture.onLoad} onError={capture.onError}/>:null}
     {piece.kind==='video'&&<View style={{position:'absolute',bottom:2,right:2,backgroundColor:'#493640CC',borderRadius:6,paddingHorizontal:4}}><Text style={{color:'white',fontSize:Math.max(8,Math.min(15,width/8))}}>▶</Text></View>}
     {!!error&&<Text style={{fontSize:10}}>{error}</Text>}
   </View>;

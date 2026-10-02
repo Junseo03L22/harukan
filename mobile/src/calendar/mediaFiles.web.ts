@@ -9,9 +9,13 @@ function openDB():Promise<IDBDatabase> {
     request.onerror=()=>reject(new Error('브라우저 미디어 저장소를 열지 못했어.'));
   });
 }
-async function writeBlob(key:string,blob:Blob) {
+export async function writeBlob(key:string,blob:Blob) {
   const db=await openDB();
   try {await new Promise<void>((resolve,reject)=>{const tx=db.transaction('files','readwrite');tx.objectStore('files').put(blob,key);tx.oncomplete=()=>resolve();tx.onabort=()=>reject(new Error('미디어 저장 공간이 부족해.'));tx.onerror=()=>reject(new Error('미디어를 저장하지 못했어.'));});}finally{db.close();}
+}
+export async function removeBlob(key:string) {
+  const db=await openDB();
+  try {await new Promise<void>((resolve,reject)=>{const tx=db.transaction('files','readwrite');tx.objectStore('files').delete(key);tx.oncomplete=()=>resolve();tx.onabort=()=>reject(new Error('임시 파일을 정리하지 못했어요.'));tx.onerror=()=>reject(tx.error);});}finally{db.close();}
 }
 export async function resolveMedia(source:string) {
   if(!source.startsWith('media:'))return {uri:source,dispose:()=>{}};
